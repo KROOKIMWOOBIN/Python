@@ -49,7 +49,7 @@ oldList = [1, 2, 3]
 newList = oldList
 oldList[0] = 4
 oldList.append(5)
-print(oldList)
+print(newList)
 # 깊은 복사 -> 메모리 공간을 복사하여  새로 만듬
 oldList = [1,2,3]
 newList = oldList[:]
@@ -65,3 +65,47 @@ print(st1)
 print(st1[0],st1[1],st1[2])
 print(st1 + st2)
 print(st2 * 3)
+
+for i in range(len(st1) -1, -1, -1): # i값은 len(st1) -1부터 0까지
+    print(st1[i], end=' ')
+
+print()
+
+for i in range(len(st1)) :
+    print('< %s >' % st1[i])
+
+for k in st1 :
+    print("<%s>" % k)
+
+if '문' in st1 :
+    print('문 있음1')
+
+del(st1)
+
+strex = "사랑"
+strex2 = strex*3
+
+print(strex2)
+# del(strex[2]) 이렇게는 안됨
+del(strex2) # 전체 삭제는 가능
+
+#outStr = ""
+#inStr = input("문자열을 입력하세요 : ")
+#count = len(inStr)
+
+#for i in range(0, count) :
+#    outStr += inStr[count - (i + 1)]
+
+#print(outStr)
+#---------------------------------------------
+# 다른 방식
+#inStr = input("문자열 입력 >>> ")
+#for i in range(len(inStr) - 1, -1, -1):
+#    print(inStr[i], end = "")
+
+#del(inStr)
+
+inStr = "love"
+
+for i in range(len(inStr)) :
+    print(inStr[i], end=' ')

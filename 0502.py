@@ -83,6 +83,7 @@ printlotto(lotto)
 getwinner(lotto)
 '''
 # 피보나치수열 1부터 13까지 출력하는 재귀함수
+'''
 def fibo(n) :
     if n < 2 :
         return 1
@@ -90,3 +91,4 @@ def fibo(n) :
 
 for i in range(13) :
     print('%d개월 후 토끼의 수 = %d' % (i ,fibo(i)))
+'''

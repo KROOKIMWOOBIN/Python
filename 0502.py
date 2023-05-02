@@ -92,6 +92,8 @@ def fibo(n) :
 for i in range(13) :
     print('%d개월 후 토끼의 수 = %d' % (i ,fibo(i)))
 '''
+# 웹브라우저 활용
+'''
 import webbrowser
 
 while True :
@@ -115,3 +117,4 @@ while True :
         if category == 3:
             urlex += '&hl=en&tbm=vid&source=lnms&sa=X&ved=2ahUKEwj61d3F96r-AhWDmlYBHSBbDYcQ_AUoA3oECAIQBQ&biw=1920&bih=969&dpr=1'
         webbrowser.open_new(urlex)
+'''

@@ -30,7 +30,7 @@ def show_map():
     # 예: print(f"애완동물 종: {pet_species}, 특징: {pet_description}, 위치: {location}")
 
 # 메인 윈도우 생성
-root = tk.Tk()
+root = tk.Tk() # 새로운 창을 나는 만들겠다.
 root.title("PetFinder") # 제목
 root.geometry("400x300") # 화면 크기
 

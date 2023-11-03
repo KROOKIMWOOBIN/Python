@@ -22,41 +22,56 @@
 
 import tkinter as tk
 
+def show_pet_info(event):
+    item = canvas.find_withtag("current")[0]
+    pet_info = pet_info_dict[item]
+    info_label.config(text=pet_info)
+
 def show_map():
-    # 입력된 애완동물 종 및 특징, 위치 정보 가져오기
     pet_species = pet_species_entry.get()
     pet_description = pet_description_entry.get()
     location = location_entry.get()
-    
-    # 여기에서 Google 지도 API를 사용하여 위치를 표시하면 됩니다.
-    # 예: print(f"애완동물 종: {pet_species}, 특징: {pet_description}, 위치: {location}")
+    x, y = map(int, location.split(','))
+    oval_id = canvas.create_oval(x, y, x + 10, y + 10, fill="red")
+    pet_info = f"애완동물 종: {pet_species}\n애완동물 특징: {pet_description}"
+    pet_info_dict[oval_id] = pet_info
+    canvas.tag_bind(oval_id, '<Enter>', show_pet_info)
 
-# 메인 윈도우 생성
-root = tk.Tk() # 새로운 창을 나는 만들겠다.
-root.title("PetFinder") # 제목
-root.geometry("400x300") # 화면 크기
+root = tk.Tk()
+root.title("PetFinder")
+root.geometry("1000x700")
 
-# 애완동물 종 라벨과 입력 필드 배치
-pet_species_label = tk.Label(root, text="애완동물 종")
-pet_species_label.grid(row=0, column=0, padx=10, pady=10)
-pet_species_entry = tk.Entry(root)
-pet_species_entry.grid(row=0, column=1, padx=10, pady=10)
+frame = tk.Frame(root)
+frame.pack()
 
-# 애완동물 특징 라벨과 입력 필드 배치
-pet_description_label = tk.Label(root, text="애완동물 특징")
-pet_description_label.grid(row=1, column=0, padx=10, pady=10)
-pet_description_entry = tk.Entry(root)
-pet_description_entry.grid(row=1, column=1, padx=10, pady=10)
+canvas = tk.Canvas(frame, width=600, height=500)
+canvas.pack()
 
-# 위치 라벨과 입력 필드 배치
-location_label = tk.Label(root, text="잃어버린 위치")
-location_label.grid(row=2, column=0, padx=10, pady=10)
-location_entry = tk.Entry(root)
-location_entry.grid(row=2, column=1, padx=10, pady=10)
+map_image = tk.PhotoImage(file="C:/Users/CS/Desktop/Python/AcademyWork/조아원/Project/img.GIF")
+canvas.create_image(0, 0, anchor="nw", image=map_image)
 
-# 위치 표시 버튼 추가
+pet_species_label = tk.Label(frame, text="애완동물 종")
+pet_species_label.pack(side="left", padx=10, pady=10)
+pet_species_entry = tk.Entry(frame)
+pet_species_entry.pack(side="left", padx=10, pady=10)
+
+pet_description_label = tk.Label(frame, text="애완동물 특징")
+pet_description_label.pack(side="left", padx=10, pady=10)
+pet_description_entry = tk.Entry(frame)
+pet_description_entry.pack(side="left", padx=10, pady=10)
+
+location_label = tk.Label(frame, text="잃어버린 위치")
+location_label.pack(side="left", padx=10, pady=10)
+location_entry = tk.Entry(frame)
+location_entry.pack(side="left", padx=10, pady=10)
+
 show_map_button = tk.Button(root, text="위치 표시하기", command=show_map)
-show_map_button.grid(row=3, columnspan=2, padx=10, pady=10)
+show_map_button.pack(pady=10)
+
+info_label = tk.Label(root, text="애완동물 정보가 여기에 표시됩니다.")
+info_label.pack(pady=10)
+
+pet_info_dict = {}
 
 root.mainloop()
 

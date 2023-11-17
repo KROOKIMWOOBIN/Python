@@ -8,6 +8,7 @@ class MiniGame :
             print("0. 게임 종료")
             print("1. 가위 바위 보")
             print("2. 숫자 맞추기")
+            print("3. 시장에 가면~")
             choice = int(input("어떤 게임을 하시겠습니까? >>> "))
             if choice == 0:
                 break
@@ -15,6 +16,8 @@ class MiniGame :
                 self.rockPaperScissors()
             elif choice == 2:
                 self.guessNumber()
+            elif choice == 3:
+                self.marketGame()
             else :
                 print("올바른 게임을 선택해주세요")
     def rockPaperScissors(self):
@@ -40,7 +43,27 @@ class MiniGame :
             print("더 큰 수를 입력해보세요.")
         else:
             print("더 작은 수를 입력해보세요.")
-                
+    def marketGame(self):
+        player_list = []
+        market_list = []
+        gameEnd = True
 
+        player = input("시장에 가면 ~~~도 있고 >>> ")
+        market_list.append(player)
+
+        while gameEnd :
+            player = input("시장에 가면 ~~~도 있고 >>> ")
+            player_list = player.split()
+            if len(market_list) > len(player_list):
+                print("틀렸습니다.")
+                break
+            for i in range(len(market_list)) :
+                if market_list[i] != player_list[i] :
+                    gameEnd = False
+                    print("틀렸습니다.")
+                    break
+            market_list = player_list
+                
 game1 = MiniGame()
 game1.selectGame()
+

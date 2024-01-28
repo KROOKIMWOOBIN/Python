@@ -1,78 +1,207 @@
-# 프로젝트
-# 프로젝트 명 : 펫파인더
-# 사용할 언어 : Python
-# 사용할 라이브러리 : 미정
-# <<< 프로젝트 설명 >>>
-# 사용자가 애완동물의 특징을 입력 해서 지도에 표시
+import json
+from tkinter import Button, Entry, Label, Tk
 
-# 1. 라이브러리 사용 여부
-# 2. 구글 지도
-# 3. GUI O
+class Animal:
+    def __init__(self, name, species, age):
+        self.name = name
+        self.species = species
+        self.age = age
 
-# 알고리즘(단계별로 문제를 해결할 수 있는 걸) 
-# - GUI로 구성
-# 1. 사용자가 애완동물의 특징을 입력
-# 2. 지도에 특징과 같이 표시
+class AnimalShelter:
+    def __init__(self):
+        self.animals = []
 
-# 종류 및 생김새, 성별, 나이, 이미지 <<< 사용자가 입력
-# 지도에 정보와 같이 표시
-# ----------------------------------------------------
+    def add_animal(self, animal):
+        self.animals.append(animal)
 
-# 첫 제출 11월 29일 <- 11월 24일까지 제작
+    def remove_animal(self, name, species, age):
+        for animal in self.animals:
+            if animal.name == name and animal.species == species and animal.age == age:
+                self.animals.remove(animal)
+                return True
+        return False
 
-import tkinter as tk
+    def search_animal(self, name):
+        for animal in self.animals:
+            if animal.name == name:
+                return animal
+        return None
 
-def show_pet_info(event):
-    item = canvas.find_withtag("current")[0]
-    pet_info = pet_info_dict[item]
-    info_label.config(text=pet_info)
+class AnimalShelterGUI:
+    def __init__(self, root):
+        self.root = root
+        self.shelter = AnimalShelter()
 
-def show_map():
-    pet_species = pet_species_entry.get()
-    pet_description = pet_description_entry.get()
-    location = location_entry.get()
-    x, y = map(int, location.split(','))
-    oval_id = canvas.create_oval(x, y, x + 10, y + 10, fill="red")
-    pet_info = f"애완동물 종: {pet_species}\n애완동물 특징: {pet_description}"
-    pet_info_dict[oval_id] = pet_info
-    canvas.tag_bind(oval_id, '<Enter>', show_pet_info)
+        # 동물 검색
+        self.search_label = Label(root, text="동물 이름:")
+        self.search_label.pack()
 
-root = tk.Tk()
-root.title("PetFinder")
-root.geometry("1000x700")
+        self.search_entry = Entry(root)
+        self.search_entry.pack()
 
-frame = tk.Frame(root)
-frame.pack()
+        search_button = Button(root, text="동물 검색", command=self.search_animal)
+        search_button.pack()
 
-canvas = tk.Canvas(frame, width=600, height=500)
-canvas.pack()
+        self.result_label = Label(root, text="검색 결과가 여기에 표시됩니다.")
+        self.result_label.pack()
 
-map_image = tk.PhotoImage(file="C:/Users/CS/Desktop/Python/AcademyWork/조아원/Project/img.GIF")
-canvas.create_image(0, 0, anchor="nw", image=map_image)
+        list_button = Button(root, text="동물 목록 조회", command=self.list_animals)
+        list_button.pack()
 
-pet_species_label = tk.Label(frame, text="애완동물 종")
-pet_species_label.pack(side="left", padx=10, pady=10)
-pet_species_entry = tk.Entry(frame)
-pet_species_entry.pack(side="left", padx=10, pady=10)
+        cancel_button = Button(root, text="조회 취소", command=self.cancel_list)
+        cancel_button.pack()
 
-pet_description_label = tk.Label(frame, text="애완동물 특징")
-pet_description_label.pack(side="left", padx=10, pady=10)
-pet_description_entry = tk.Entry(frame)
-pet_description_entry.pack(side="left", padx=10, pady=10)
+        # 동물 추가
+        self.add_name_label = Label(root, text="이름:")
+        self.add_name_label.pack()
 
-location_label = tk.Label(frame, text="잃어버린 위치")
-location_label.pack(side="left", padx=10, pady=10)
-location_entry = tk.Entry(frame)
-location_entry.pack(side="left", padx=10, pady=10)
+        self.add_name_entry = Entry(root)
+        self.add_name_entry.pack()
 
-show_map_button = tk.Button(root, text="위치 표시하기", command=show_map)
-show_map_button.pack(pady=10)
+        self.add_species_label = Label(root, text="종:")
+        self.add_species_label.pack()
 
-info_label = tk.Label(root, text="애완동물 정보가 여기에 표시됩니다.")
-info_label.pack(pady=10)
+        self.add_species_entry = Entry(root)
+        self.add_species_entry.pack()
 
-pet_info_dict = {}
+        self.add_age_label = Label(root, text="나이:")
+        self.add_age_label.pack()
 
+        self.add_age_entry = Entry(root)
+        self.add_age_entry.pack()
+
+        add_button = Button(root, text="동물 추가", command=self.add_animal)
+        add_button.pack()
+
+        # 동물 삭제
+        self.delete_name_label = Label(root, text="이름:")
+        self.delete_name_label.pack()
+
+        self.delete_name_entry = Entry(root)
+        self.delete_name_entry.pack()
+
+        self.delete_species_label = Label(root, text="종:")
+        self.delete_species_label.pack()
+
+        self.delete_species_entry = Entry(root)
+        self.delete_species_entry.pack()
+
+        self.delete_age_label = Label(root, text="나이:")
+        self.delete_age_label.pack()
+
+        self.delete_age_entry = Entry(root)
+        self.delete_age_entry.pack()
+
+        delete_button = Button(root, text="동물 삭제", command=self.delete_animal)
+        delete_button.pack()
+
+        # 데이터 저장 및 불러오기
+        save_button = Button(root, text="데이터 저장", command=self.save_data)
+        save_button.pack()
+
+        load_button = Button(root, text="데이터 불러오기", command=self.load_data)
+        load_button.pack()
+
+        # 윈도우 크기 조정
+        root.geometry("200x800")
+
+    def search_animal(self):
+        name = self.search_entry.get()
+        animal = self.shelter.search_animal(name)
+        if animal:
+            result_text = f"이름: {animal.name}, 종: {animal.species}, 나이: {animal.age}"
+        else:
+            result_text = "검색 결과가 없습니다."
+        self.result_label.configure(text=result_text)
+
+    def add_animal(self):
+        name = self.add_name_entry.get()
+        species = self.add_species_entry.get()
+        age = self.add_age_entry.get()
+
+        animal = Animal(name, species, age)
+        self.shelter.add_animal(animal)
+
+        self.add_name_entry.delete(0, 'end')
+        self.add_species_entry.delete(0, 'end')
+        self.add_age_entry.delete(0, 'end')
+
+    def delete_animal(self):
+        name = self.delete_name_entry.get()
+        species = self.delete_species_entry.get()
+        age = self.delete_age_entry.get()
+
+        success = self.shelter.remove_animal(name, species, age)
+        if success:
+            result_text = f"{name}이(가) 삭제되었습니다."
+        else:
+            result_text = "삭제할 동물이 없거나 입력한 정보가 일치하지 않습니다."
+        self.result_label.configure(text=result_text)
+
+    def save_data(self):
+        animals = []
+        for animal in self.shelter.animals:
+            animal_dict = {
+                'name': animal.name,
+                'species': animal.species,
+                'age': animal.age
+            }
+            animals.append(animal_dict)
+
+        with open('data.json', 'w') as file:
+            json.dump(animals, file)
+
+        self.clear_entries()
+
+        # 데이터 저장
+        with open('data.json', 'w') as file:
+            json.dump(animals, file)
+
+        self.clear_entries()
+
+    def load_data(self):
+        try:
+            with open('data.json', 'r') as file:
+                animals = json.load(file)
+
+            self.shelter.animals = []
+            for animal in animals:
+                name = animal['name']
+                species = animal['species']
+                age = animal['age']
+                animal_obj = Animal(name, species, age)
+                self.shelter.add_animal(animal_obj)
+
+            result_text = "데이터를 불러왔습니다."
+        except FileNotFoundError:
+            result_text = "데이터 파일이 존재하지 않습니다."
+
+        self.result_label.configure(text=result_text)
+
+    def clear_entries(self):
+        self.add_name_entry.delete(0, 'end')
+        self.add_species_entry.delete(0, 'end')
+        self.add_age_entry.delete(0, 'end')
+        self.delete_name_entry.delete(0, 'end')
+        self.delete_species_entry.delete(0, 'end')
+        self.delete_age_entry.delete(0, 'end')
+
+    def list_animals(self):
+        animal_list = []
+        for animal in self.shelter.animals:
+            animal_info = f"이름: {animal.name}, 종: {animal.species}, 나이: {animal.age}"
+            animal_list.append(animal_info)
+
+        if animal_list:
+            result_text = "\n".join(animal_list)
+        else:
+            result_text = "동물 목록이 비어있습니다."
+        self.result_label.configure(text=result_text)
+
+    def cancel_list(self):
+        self.result_label.configure(text="검색 결과가 여기에 표시됩니다.")
+
+# 메인 코드
+root = Tk()
+gui = AnimalShelterGUI(root)
 root.mainloop()
-
-

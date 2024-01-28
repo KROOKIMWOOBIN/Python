@@ -23,8 +23,10 @@ foreach문
 a = abcde
 a b c d e
 '''
+'''
 a = "123754"
 
 for i in a :
     if int(i)%2 == 0 :
         print(i)
+        '''
